@@ -12,6 +12,7 @@
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL, PIN, NEO_GRB + NEO_KHZ800);
 
 #define COLOR_MAX 255
+#define COLOR_STEP 15
 uint32_t red = strip.Color(COLOR_MAX, 0, 0);
 uint32_t green = strip.Color(0, COLOR_MAX, 0);
 uint32_t blue = strip.Color(0, 0, COLOR_MAX);
@@ -33,7 +34,7 @@ void loop() {
   setColor(white, 60*7);
   fadeOut();
   rainbow();
-  setColor(white, 60*8);
+  setColor(dark, 60*8);
 }
 
 void setColor(uint32_t color, uint32_t waitingPeriodMin) {
@@ -41,7 +42,6 @@ void setColor(uint32_t color, uint32_t waitingPeriodMin) {
     strip.setPixelColor(pos, color);
     strip.show();
     waitMin(waitingPeriodMin);
-//    delay(waitingPeriodMin*1000);    // for debug
   }
 }
 
@@ -54,14 +54,14 @@ void waitMin(uint32_t min) {
 }
 
 void fadeIn() {
-  for(uint8_t i=1; i<=COLOR_MAX; i+=10) {
-    setColor(strip.Color(i, 0, 0), 1);
+  for(uint8_t i=0; i<=COLOR_MAX/COLOR_STEP; i++) {
+    setColor(strip.Color(i*COLOR_STEP, 0, 0), 1);
   }
 }
 
 void fadeOut() {
-  for(uint8_t i=COLOR_MAX; i>10; i-=10) {
-    setColor(strip.Color(i, 0, 0), 1);
+  for(uint8_t i=0; i<=COLOR_MAX/COLOR_STEP; i++) {
+    setColor(strip.Color(COLOR_MAX-(i*COLOR_STEP), 0, 0), 1);
   }
 }
 
